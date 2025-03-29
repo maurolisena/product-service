@@ -1,0 +1,45 @@
+package com.mlisena.product.controller;
+
+import com.mlisena.product.dto.request.ProductRequest;
+import com.mlisena.product.entity.Product;
+import com.mlisena.product.service.ProductService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/products")
+public class ProductController {
+
+    private final ProductService productService;
+
+    public ProductController(
+        ProductService productService
+    ) {
+        this.productService = productService;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Product>> getProducts() {
+        return new ResponseEntity<>(
+            productService.getProducts(),
+            HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Product> getProductById(@PathVariable String id) {
+        return new ResponseEntity<>(
+            productService.getProductById(id),
+            HttpStatus.OK
+        );
+    }
+
+    @PostMapping
+    public ResponseEntity<Void> createProduct(@RequestBody ProductRequest productRequest) {
+        productService.createProduct(productRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+}
