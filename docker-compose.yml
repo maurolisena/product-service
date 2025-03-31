@@ -1,0 +1,39 @@
+version: "3.9"
+services:
+    product-service:
+        container_name: product-service
+        image: product-service
+        build:
+            context: .
+            dockerfile: Dockerfile
+        ports:
+            - "8081:8081"
+        environment:
+            - SPRING_PROFILES_ACTIVE=dev
+        depends_on:
+            mongo_database:
+                condition: service_healthy
+        networks:
+            - application-network
+
+    mongo_database:
+        image: mongodb/mongodb-community-server
+        container_name: mongo_database
+        ports:
+            - "27018:27017"
+        networks:
+            - application-network
+        volumes:
+            - mongo_database_data:/data/db
+        healthcheck:
+            test: ["CMD", "mongosh", "--eval", "db.runCommand('ping').ok"]
+            interval: 10s
+            retries: 5
+            start_period: 30s
+
+networks:
+    application-network:
+        external: true
+
+volumes:
+    mongo_database_data:
