@@ -23,6 +23,12 @@ public class ProductController {
         this.productService = productService;
     }
 
+    @PostMapping
+    public ResponseEntity<Void> createProduct(@RequestBody ProductRequest productRequest) {
+        productService.createProduct(productRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
     @GetMapping
     public ResponseEntity<List<Product>> getProducts() {
         return new ResponseEntity<>(
@@ -39,9 +45,18 @@ public class ProductController {
         );
     }
 
-    @PostMapping
-    public ResponseEntity<Void> createProduct(@RequestBody ProductRequest productRequest) {
-        productService.createProduct(productRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateProduct(
+        @PathVariable String id,
+        @RequestBody ProductRequest productRequest
+    ) {
+        productService.updateProduct(id, productRequest);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable String id) {
+        productService.deleteProduct(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

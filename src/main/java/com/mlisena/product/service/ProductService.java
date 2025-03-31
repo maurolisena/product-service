@@ -35,4 +35,20 @@ public class ProductService {
 
         productRepository.save(product);
     }
+
+    public void deleteProduct(String id) {
+        productRepository.deleteById(id);
+    }
+
+    public void updateProduct(String id, ProductRequest productRequest) {
+        Product product = productRepository.findById(id).orElse(null);
+
+        if (product != null) {
+            product.setName(productRequest.getName());
+            product.setDescription(productRequest.getDescription());
+            product.setPrice(productRequest.getPrice());
+
+            productRepository.save(product);
+        }
+    }
 }
