@@ -20,9 +20,12 @@ services:
         image: mongodb/mongodb-community-server
         container_name: mongo_database
         ports:
-            - "27018:27017"
+            - "27017:27017"
         networks:
             - application-network
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: mlisena
+            MONGO_INITDB_ROOT_PASSWORD: A8424628
         volumes:
             - mongo_database_data:/data/db
         healthcheck:
