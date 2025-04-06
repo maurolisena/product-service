@@ -27,6 +27,7 @@ services:
             MONGO_INITDB_ROOT_USERNAME: mlisena
             MONGO_INITDB_ROOT_PASSWORD: A8424628
         volumes:
+            - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
             - mongo_database_data:/data/db
         healthcheck:
             test: ["CMD", "mongosh", "--eval", "db.runCommand('ping').ok"]
