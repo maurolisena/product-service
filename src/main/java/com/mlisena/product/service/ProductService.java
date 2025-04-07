@@ -1,6 +1,8 @@
 package com.mlisena.product.service;
 
+import com.mlisena.product.dto.mapper.ProductMapper;
 import com.mlisena.product.dto.request.ProductRequest;
+import com.mlisena.product.dto.response.ProductResponse;
 import com.mlisena.product.entity.Product;
 import com.mlisena.product.repository.ProductRepository;
 import org.springframework.stereotype.Service;
@@ -16,23 +18,20 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public List<Product> getProducts() {
-        return productRepository.findAll();
+    public List<ProductResponse> getProducts() {
+        List<Product> productList = productRepository.findAll();
+        return ProductMapper.toResponseList(productList);
     }
 
-
-    public Product getProductById(String id) {
-        return productRepository.findById(id).orElse(null);
+    public ProductResponse getProductById(String id) {
+        Product product = productRepository
+                .findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
+        return ProductMapper.toResponse(product);
     }
 
-    public void createProduct(ProductRequest productRequest) {
-
-        Product product = Product.builder()
-            .name(productRequest.getName())
-            .description(productRequest.getDescription())
-            .price(productRequest.getPrice())
-            .build();
-
+    public void createProduct(ProductRequest request) {
+        Product product = ProductMapper.toEntity(request);
         productRepository.save(product);
     }
 
@@ -44,10 +43,7 @@ public class ProductService {
         Product product = productRepository.findById(id).orElse(null);
 
         if (product != null) {
-            product.setName(productRequest.getName());
-            product.setDescription(productRequest.getDescription());
-            product.setPrice(productRequest.getPrice());
-
+            ProductMapper.updateEntity(product, productRequest);
             productRepository.save(product);
         }
     }

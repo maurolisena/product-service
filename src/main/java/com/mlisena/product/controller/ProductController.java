@@ -1,6 +1,7 @@
 package com.mlisena.product.controller;
 
 import com.mlisena.product.dto.request.ProductRequest;
+import com.mlisena.product.dto.response.ProductResponse;
 import com.mlisena.product.entity.Product;
 import com.mlisena.product.service.ProductService;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -30,7 +31,7 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Product>> getProducts() {
+    public ResponseEntity<List<ProductResponse>> getProducts() {
         return new ResponseEntity<>(
             productService.getProducts(),
             HttpStatus.OK
@@ -38,7 +39,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable String id) {
+    public ResponseEntity<ProductResponse> getProductById(@PathVariable String id) {
         return new ResponseEntity<>(
             productService.getProductById(id),
             HttpStatus.OK
