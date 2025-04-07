@@ -2,7 +2,6 @@ package com.mlisena.product.controller;
 
 import com.mlisena.product.dto.request.ProductRequest;
 import com.mlisena.product.dto.response.ProductResponse;
-import com.mlisena.product.entity.Product;
 import com.mlisena.product.service.ProductService;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.HttpStatus;
