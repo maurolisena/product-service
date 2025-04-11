@@ -4,6 +4,7 @@ import com.mlisena.product.dto.mapper.ProductMapper;
 import com.mlisena.product.dto.request.ProductRequest;
 import com.mlisena.product.dto.response.ProductResponse;
 import com.mlisena.product.entity.Product;
+import com.mlisena.product.exception.product.ProductNotFoundException;
 import com.mlisena.product.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +27,7 @@ public class ProductService {
     public ProductResponse getProductById(String id) {
         Product product = productRepository
                 .findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
+                .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + id));
         return ProductMapper.toResponse(product);
     }
 
