@@ -6,17 +6,23 @@ import com.mlisena.product.dto.response.ProductResponse;
 import com.mlisena.product.entity.Product;
 import com.mlisena.product.exception.product.ProductNotFoundException;
 import com.mlisena.product.repository.ProductRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
+@Slf4j
 public class ProductService {
 
     private final ProductRepository productRepository;
 
-    public ProductService(ProductRepository productRepository) {
-        this.productRepository = productRepository;
+    public void createProduct(ProductRequest request) {
+        Product product = ProductMapper.toEntity(request);
+        productRepository.save(product);
+        log.info("Product created successfully: {}", product);
     }
 
     public List<ProductResponse> getProducts() {
@@ -31,15 +37,6 @@ public class ProductService {
         return ProductMapper.toResponse(product);
     }
 
-    public void createProduct(ProductRequest request) {
-        Product product = ProductMapper.toEntity(request);
-        productRepository.save(product);
-    }
-
-    public void deleteProduct(String id) {
-        productRepository.deleteById(id);
-    }
-
     public void updateProduct(String id, ProductRequest productRequest) {
         Product product = productRepository.findById(id).orElse(null);
 
@@ -48,4 +45,9 @@ public class ProductService {
             productRepository.save(product);
         }
     }
+
+    public void deleteProduct(String id) {
+        productRepository.deleteById(id);
+    }
+
 }
