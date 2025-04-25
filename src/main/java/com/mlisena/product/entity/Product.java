@@ -23,8 +23,6 @@ public class Product {
     private String code;
     private String description;
     private double price;
-    private String categoryId;
-    private int stock;
     @CreatedDate
     private LocalDateTime createdAt;
     @LastModifiedDate

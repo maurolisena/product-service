@@ -4,6 +4,7 @@ import com.mlisena.product.dto.request.ProductRequest;
 import com.mlisena.product.dto.response.ProductResponse;
 import com.mlisena.product.entity.Product;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,8 +17,11 @@ public class ProductMapper {
     public static Product toEntity(ProductRequest productRequest) {
         return Product.builder()
             .name(productRequest.name())
+            .code(productRequest.code())
             .description(productRequest.description())
             .price(productRequest.price())
+            .createdAt(LocalDateTime.now())
+            .updatedAt(LocalDateTime.now())
             .build();
     }
 
@@ -27,9 +31,7 @@ public class ProductMapper {
             product.getName(),
             product.getCode(),
             product.getDescription(),
-            product.getPrice(),
-            product.getStock(),
-            product.getCategoryId()
+            product.getPrice()
         );
     }
 
@@ -41,7 +43,9 @@ public class ProductMapper {
 
     public static void updateEntity(Product product, ProductRequest productRequest) {
         product.setName(productRequest.name());
+        product.setCode(productRequest.code());
         product.setDescription(productRequest.description());
         product.setPrice(productRequest.price());
+        product.setUpdatedAt(LocalDateTime.now());
     }
 }
