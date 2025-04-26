@@ -1,4 +1,4 @@
-package com.mlisena.product.dto.request;
+package com.mlisena.product.dto.request.product;
 
 public record ProductFilterRequest(
     String name,

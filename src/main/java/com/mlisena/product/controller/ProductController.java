@@ -1,8 +1,8 @@
 package com.mlisena.product.controller;
 
-import com.mlisena.product.dto.request.CreateProductRequest;
-import com.mlisena.product.dto.request.ProductFilterRequest;
-import com.mlisena.product.dto.request.UpdateProductRequest;
+import com.mlisena.product.dto.request.product.CreateProductRequest;
+import com.mlisena.product.dto.request.product.ProductFilterRequest;
+import com.mlisena.product.dto.request.product.UpdateProductRequest;
 import com.mlisena.product.dto.response.ProductResponse;
 import com.mlisena.product.service.ProductService;
 import jakarta.validation.Valid;

@@ -1,10 +1,8 @@
 package com.mlisena.product.dto.mapper;
 
-import com.mlisena.product.dto.request.CreateProductRequest;
+import com.mlisena.product.dto.request.product.CreateProductRequest;
 import com.mlisena.product.dto.response.ProductResponse;
 import com.mlisena.product.entity.Product;
-
-import java.time.LocalDateTime;
 
 public class ProductMapper {
 
@@ -18,8 +16,6 @@ public class ProductMapper {
             .code(request.code())
             .description(request.description())
             .price(request.price())
-            .createdAt(LocalDateTime.now())
-            .updatedAt(LocalDateTime.now())
             .build();
     }
 
