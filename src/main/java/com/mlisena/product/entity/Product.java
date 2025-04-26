@@ -26,7 +26,8 @@ public class Product {
     private String code;
     private String description;
     private double price;
-    private boolean active;
+    @Builder.Default
+    private boolean active = true;
     @CreatedDate
     private LocalDateTime createdAt;
     @LastModifiedDate

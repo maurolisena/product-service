@@ -1,17 +1,17 @@
 package com.mlisena.product.controller;
 
 import com.mlisena.product.dto.request.CreateProductRequest;
+import com.mlisena.product.dto.request.ProductFilterRequest;
 import com.mlisena.product.dto.request.UpdateProductRequest;
 import com.mlisena.product.dto.response.ProductResponse;
 import com.mlisena.product.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/products")
@@ -27,9 +27,10 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @GetMapping
-    public ResponseEntity<List<ProductResponse>> getProducts() {
-        return ResponseEntity.status(HttpStatus.OK).body(productService.getProducts());
+    @GetMapping("/search")
+    public ResponseEntity<Page<ProductResponse>> searchProducts(ProductFilterRequest filter) {
+        Page<ProductResponse> products = productService.searchProducts(filter);
+        return ResponseEntity.status(HttpStatus.OK).body(products);
     }
 
     @GetMapping("/{id}")
