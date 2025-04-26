@@ -1,6 +1,7 @@
 package com.mlisena.product.dto.mapper;
 
-import com.mlisena.product.dto.request.ProductRequest;
+import com.mlisena.product.dto.request.CreateProductRequest;
+import com.mlisena.product.dto.request.UpdateProductRequest;
 import com.mlisena.product.dto.response.ProductResponse;
 import com.mlisena.product.entity.Product;
 
@@ -14,12 +15,13 @@ public class ProductMapper {
         // Private constructor to prevent instantiation
     }
 
-    public static Product toEntity(ProductRequest productRequest) {
+    public static Product toEntity(CreateProductRequest request) {
         return Product.builder()
-            .name(productRequest.name())
-            .code(productRequest.code())
-            .description(productRequest.description())
-            .price(productRequest.price())
+            .name(request.name())
+            .code(request.code())
+            .active(true)
+            .description(request.description())
+            .price(request.price())
             .createdAt(LocalDateTime.now())
             .updatedAt(LocalDateTime.now())
             .build();
@@ -41,11 +43,12 @@ public class ProductMapper {
             .collect(Collectors.toList());
     }
 
-    public static void updateEntity(Product product, ProductRequest productRequest) {
-        product.setName(productRequest.name());
-        product.setCode(productRequest.code());
-        product.setDescription(productRequest.description());
-        product.setPrice(productRequest.price());
+    public static void updateEntity(Product product, UpdateProductRequest request) {
+        product.setName(request.name());
+        product.setCode(request.code());
+        product.setActive(true);
+        product.setDescription(request.description());
+        product.setPrice(request.price());
         product.setUpdatedAt(LocalDateTime.now());
     }
 }

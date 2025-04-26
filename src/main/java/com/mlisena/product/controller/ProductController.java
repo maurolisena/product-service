@@ -1,6 +1,7 @@
 package com.mlisena.product.controller;
 
-import com.mlisena.product.dto.request.ProductRequest;
+import com.mlisena.product.dto.request.CreateProductRequest;
+import com.mlisena.product.dto.request.UpdateProductRequest;
 import com.mlisena.product.dto.response.ProductResponse;
 import com.mlisena.product.service.ProductService;
 import jakarta.validation.Valid;
@@ -21,31 +22,27 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping
-    public ResponseEntity<Void> createProduct(@RequestBody @Valid ProductRequest productRequest) {
-        productService.createProduct(productRequest);
+    public ResponseEntity<Void> createProduct(@RequestBody @Valid CreateProductRequest request) {
+        productService.createProduct(request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping
     public ResponseEntity<List<ProductResponse>> getProducts() {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(productService.getProducts());
+        return ResponseEntity.status(HttpStatus.OK).body(productService.getProducts());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ProductResponse> getProduct(@PathVariable String id) {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(productService.getProductById(id));
+        return ResponseEntity.status(HttpStatus.OK).body(productService.getProductById(id));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateProduct(
         @PathVariable String id,
-        @RequestBody @Valid ProductRequest productRequest
+        @RequestBody @Valid UpdateProductRequest request
     ) {
-        productService.updateProduct(id, productRequest);
+        productService.updateProduct(id, request);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
