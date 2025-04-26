@@ -25,7 +25,8 @@ public class ProductRepository implements ProductCustomRepository {
     private final MongoTemplate mongoTemplate;
 
     public Product findById(String id) {
-        return mongoTemplate.findById(id, Product.class);
+        Query query = new Query(Criteria.where("_id").is(id).and("active").is(true));
+        return mongoTemplate.findOne(query, Product.class);
     }
 
     @Override
@@ -49,6 +50,7 @@ public class ProductRepository implements ProductCustomRepository {
             }
             query.addCriteria(priceCriteria);
         }
+        query.addCriteria(Criteria.where("active").is(true));
 
         long total = mongoTemplate.count(query, Product.class);
         query.with(PageRequest.of(filter.page(), filter.size()));
@@ -59,7 +61,7 @@ public class ProductRepository implements ProductCustomRepository {
 
     public void updateById(String id, UpdateProductRequest request) {
 
-        Query query = new Query(Criteria.where("_id").is(id));
+        Query query = new Query(Criteria.where("_id").is(id).and("active").is(true));
         Update update = new Update()
                 .set("name", request.name())
                 .set("code", request.code())
