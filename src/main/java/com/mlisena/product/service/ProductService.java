@@ -1,9 +1,10 @@
 package com.mlisena.product.service;
 
 import com.mlisena.product.dto.mapper.ProductMapper;
-import com.mlisena.product.dto.request.CreateProductRequest;
-import com.mlisena.product.dto.request.ProductFilterRequest;
-import com.mlisena.product.dto.request.UpdateProductRequest;
+import com.mlisena.product.dto.request.inventory.CreateInventoryRequest;
+import com.mlisena.product.dto.request.product.CreateProductRequest;
+import com.mlisena.product.dto.request.product.ProductFilterRequest;
+import com.mlisena.product.dto.request.product.UpdateProductRequest;
 import com.mlisena.product.dto.response.ProductResponse;
 import com.mlisena.product.entity.Product;
 import com.mlisena.product.exception.product.ProductNotFoundException;
@@ -19,12 +20,16 @@ import org.springframework.stereotype.Service;
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final InventoryService inventoryService;
 
     public void createProduct(CreateProductRequest request) {
         log.info("Creating Product with request: {}", request);
         Product product = ProductMapper.toEntity(request);
         productRepository.save(product);
         log.info("Product saved with id: {}", product.getId());
+        inventoryService.createInventory(
+            new CreateInventoryRequest(product.getCode(), request.quantity())
+        );
     }
 
     public ProductResponse getProductById(String id) {
