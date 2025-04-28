@@ -1,7 +1,8 @@
 package com.mlisena.product.dto.mapper;
 
 import com.mlisena.product.dto.request.product.CreateProductRequest;
-import com.mlisena.product.dto.response.ProductResponse;
+import com.mlisena.product.dto.response.product.ProductListResponse;
+import com.mlisena.product.dto.response.product.ProductResponse;
 import com.mlisena.product.entity.Product;
 
 public class ProductMapper {
@@ -19,13 +20,24 @@ public class ProductMapper {
             .build();
     }
 
-    public static ProductResponse toResponse(Product product) {
+    public static ProductResponse toResponse(Product product, int productStock) {
         return new ProductResponse(
             product.getId(),
             product.getName(),
             product.getCode(),
+            productStock,
             product.getDescription(),
             product.getPrice()
+        );
+    }
+
+    public static ProductListResponse toListResponse(Product product) {
+        return new ProductListResponse(
+                product.getId(),
+                product.getName(),
+                product.getCode(),
+                product.getDescription(),
+                product.getPrice()
         );
     }
 }
