@@ -26,47 +26,43 @@ public class ProductService {
     private final InventoryService inventoryService;
     private final KafkaProducerService kafkaProducerService;
 
-    public void createProduct(CreateProductRequest request) {
+    public ProductResponse createProduct(CreateProductRequest request) {
         log.info("Creating Product with request: {}", request);
         Product product = ProductMapper.toEntity(request);
         productRepository.save(product);
         log.info("Product saved with id: {}", product.getId());
 
-        kafkaProducerService.sendCreateInventoryEvent(
-            CreateInventoryEvent.builder()
-                .skuCode(product.getCode())
-                .quantity(request.quantity())
-                .build()
-        );
+        CreateInventoryEvent event = CreateInventoryEvent.builder()
+            .skuCode(product.getCode())
+            .quantity(request.quantity())
+            .build();
+        kafkaProducerService.sendCreateInventoryEvent(event);
+
+        return ProductMapper.toResponse(product, 1);
     }
 
     public ProductResponse getProductById(String id) {
         log.info("Getting Product with id: {}", id);
         Product product = productRepository.findById(id);
-        if (product == null) {
-            throw new ProductNotFoundException("Product not found with id: " + id);
-        }
         log.info("Product found with id: {}", id);
         int stock = inventoryService.productStock(product.getCode());
         return ProductMapper.toResponse(product, stock);
     }
 
-    public Page<ProductListResponse> searchProducts(ProductFilterRequest request) {
+    public Page<ProductResponse> searchProducts(ProductFilterRequest request) {
         log.info("Searching Products with filter: {}", request);
         Page<Product> productPage = productRepository.findByFilters(request);
         log.info("Products found: {}", productPage.getTotalElements());
-        return productPage.map(ProductMapper::toListResponse);
+        return productPage.map(product -> {
+            int stock = inventoryService.productStock(product.getCode());
+            return ProductMapper.toResponse(product, stock);
+        });
     }
 
-    public void updateProduct(String id, UpdateProductRequest request) {
+    public ProductResponse updateProduct(String id, UpdateProductRequest request) {
         log.info("Updating Product with id: {}", id);
-        Product product = productRepository.findById(id);
-        if (product != null) {
-            productRepository.updateById(id, request);
-            log.info("Product updated successfully with id: {}", id);
-        } else {
-            throw new ProductNotFoundException("Product not found with id: " + id);
-        }
+        Product product = productRepository.updateById(id, request);
+        return ProductMapper.toResponse(product, 1);
     }
 
     public void deleteProduct(String id) {

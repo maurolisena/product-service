@@ -16,6 +16,7 @@ public class InventoryService {
     public int productStock(String skuCode) {
         log.info("Getting stock for SKU code: {}", skuCode);
         Inventory inventory = inventoryClient.getInventory(skuCode);
+        log.info("Stock for Product with SKU code {}: {}", skuCode, inventory);
         return inventory.quantity();
     }
 }

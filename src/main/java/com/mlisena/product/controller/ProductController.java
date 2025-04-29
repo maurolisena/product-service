@@ -3,7 +3,6 @@ package com.mlisena.product.controller;
 import com.mlisena.product.dto.request.product.CreateProductRequest;
 import com.mlisena.product.dto.request.product.ProductFilterRequest;
 import com.mlisena.product.dto.request.product.UpdateProductRequest;
-import com.mlisena.product.dto.response.product.ProductListResponse;
 import com.mlisena.product.dto.response.product.ProductResponse;
 import com.mlisena.product.service.ProductService;
 import jakarta.validation.Valid;
@@ -23,30 +22,30 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping
-    public ResponseEntity<Void> createProduct(@RequestBody @Valid CreateProductRequest request) {
-        productService.createProduct(request);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<ProductResponse> createProduct(@RequestBody @Valid CreateProductRequest request) {
+        ProductResponse product = productService.createProduct(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(product);
     }
 
-    //TODO: Change ProductListResponse to ProductResponse
     @GetMapping("/search")
-    public ResponseEntity<Page<ProductListResponse>> searchProducts(ProductFilterRequest filter) {
-        Page<ProductListResponse> products = productService.searchProducts(filter);
+    public ResponseEntity<Page<ProductResponse>> searchProducts(ProductFilterRequest filter) {
+        Page<ProductResponse> products = productService.searchProducts(filter);
         return ResponseEntity.status(HttpStatus.OK).body(products);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ProductResponse> getProduct(@PathVariable String id) {
-        return ResponseEntity.status(HttpStatus.OK).body(productService.getProductById(id));
+        ProductResponse product = productService.getProductById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(product);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateProduct(
+    public ResponseEntity<ProductResponse> updateProduct(
         @PathVariable String id,
         @RequestBody @Valid UpdateProductRequest request
     ) {
-        productService.updateProduct(id, request);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        ProductResponse product = productService.updateProduct(id, request);
+        return ResponseEntity.status(HttpStatus.OK).body(product);
     }
 
     @DeleteMapping("/{id}")

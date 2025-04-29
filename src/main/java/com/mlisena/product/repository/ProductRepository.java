@@ -28,7 +28,12 @@ public class ProductRepository implements ProductCustomRepository {
 
     public Product findById(String id) {
         Query query = new Query(Criteria.where("_id").is(id).and("active").is(true));
-        return mongoTemplate.findOne(query, Product.class);
+        Product product = mongoTemplate.findOne(query, Product.class);
+
+        if (product == null) {
+            throw new ProductNotFoundException("Product not found with id: " + id);
+        }
+        return product;
     }
 
     @Override
@@ -61,8 +66,7 @@ public class ProductRepository implements ProductCustomRepository {
         return new PageImpl<>(products, PageRequest.of(filter.page(), filter.size()), total);
     }
 
-    public void updateById(String id, UpdateProductRequest request) {
-
+    public Product updateById(String id, UpdateProductRequest request) {
         Query query = new Query(Criteria.where("_id").is(id).and("active").is(true));
         Update update = new Update()
                 .set("name", request.name())
@@ -70,7 +74,12 @@ public class ProductRepository implements ProductCustomRepository {
                 .set("description", request.description())
                 .set("price", request.price())
                 .currentDate("updatedAt");
-        mongoTemplate.findAndModify(query, update, Product.class);
+        Product updatedProduct = mongoTemplate.findAndModify(query, update, Product.class);
+
+        if (updatedProduct == null) {
+            throw new ProductNotFoundException("Product not found with id: " + id);
+        }
+        return updatedProduct;
     }
 
     public void save(Product product) {
@@ -87,7 +96,6 @@ public class ProductRepository implements ProductCustomRepository {
         Update update = new Update()
                 .set("active", false)
                 .currentDate("updatedAt");
-
         Product updatedProduct = mongoTemplate.findAndModify(query, update, Product.class);
 
         if (updatedProduct == null) {

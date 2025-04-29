@@ -30,14 +30,4 @@ public class ProductMapper {
             product.getPrice()
         );
     }
-
-    public static ProductListResponse toListResponse(Product product) {
-        return new ProductListResponse(
-                product.getId(),
-                product.getName(),
-                product.getCode(),
-                product.getDescription(),
-                product.getPrice()
-        );
-    }
 }
