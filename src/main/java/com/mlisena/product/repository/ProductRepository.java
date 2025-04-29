@@ -3,7 +3,9 @@ package com.mlisena.product.repository;
 import com.mlisena.product.dto.request.product.ProductFilterRequest;
 import com.mlisena.product.dto.request.product.UpdateProductRequest;
 import com.mlisena.product.entity.Product;
+import com.mlisena.product.exception.product.ProductAlreadyExistsException;
 import com.mlisena.product.exception.product.ProductNotFoundException;
+import com.mongodb.DuplicateKeyException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -72,7 +74,11 @@ public class ProductRepository implements ProductCustomRepository {
     }
 
     public void save(Product product) {
-        mongoTemplate.save(product);
+        try {
+            mongoTemplate.save(product);
+        } catch (DuplicateKeyException e) {
+            throw new ProductAlreadyExistsException("Product with code '" + product.getCode() + "' already exists");
+        }
     }
 
     public void deleteById(String id) {

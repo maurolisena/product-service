@@ -2,6 +2,7 @@ package com.mlisena.product.exception.handler;
 
 import com.mlisena.product.exception.common.ErrorResponse;
 import com.mlisena.product.exception.common.IlegalArgumentException;
+import com.mlisena.product.exception.product.ProductAlreadyExistsException;
 import com.mlisena.product.exception.product.ProductIllegalArgumentException;
 import com.mlisena.product.exception.product.ProductNotFoundException;
 import lombok.extern.slf4j.Slf4j;
@@ -46,6 +47,14 @@ public class GlobalExceptionHandler {
         log.error("Error ProductIllegalArgumentException.class in path {}: {}", path, ex.getMessage());
         ErrorResponse errorResponse = ErrorResponse.create(ex, HttpStatus.BAD_REQUEST, path);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    }
+
+    @ExceptionHandler(ProductAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponse> handleProductAlreadyExists(ProductAlreadyExistsException ex, WebRequest request) {
+        String path = ((ServletWebRequest) request).getRequest().getRequestURI();
+        log.error("Error ProductAlreadyExistsException.class in path {}: {}", path, ex.getMessage());
+        ErrorResponse errorResponse = ErrorResponse.create(ex, HttpStatus.CONFLICT, path);
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
     }
 
     @ExceptionHandler(Exception.class)

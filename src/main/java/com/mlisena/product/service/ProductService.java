@@ -65,7 +65,7 @@ public class ProductService {
             productRepository.updateById(id, request);
             log.info("Product updated successfully with id: {}", id);
         } else {
-            log.warn("Product not found with id: {}", id);
+            throw new ProductNotFoundException("Product not found with id: " + id);
         }
     }
 
