@@ -23,7 +23,7 @@ public class Product {
     private String id;
     @TextIndexed
     private String name;
-    @TextIndexed
+    @Indexed(unique = true)
     private String code;
     private String description;
     private double price;
