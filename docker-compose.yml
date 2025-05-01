@@ -7,7 +7,7 @@ services:
             context: .
             dockerfile: Dockerfile
         ports:
-            - "8081:8081"
+            - "9001:9001"
         environment:
             - SPRING_PROFILES_ACTIVE=dev
             - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka-server:29092
@@ -15,7 +15,7 @@ services:
             mongo_database:
                 condition: service_healthy
         networks:
-            - application-network
+            - backend
 
     mongo_database:
         image: mongodb/mongodb-community-server
@@ -23,7 +23,7 @@ services:
         ports:
             - "27017:27017"
         networks:
-            - application-network
+            - backend
         environment:
             MONGO_INITDB_ROOT_USERNAME: mlisena
             MONGO_INITDB_ROOT_PASSWORD: A8424628
@@ -36,17 +36,17 @@ services:
             retries: 5
             start_period: 30s
 
-    redis:
+    redis-database:
         image: redis:7.2-alpine
-        container_name: redis
+        container_name: redis-database
         networks:
-            - application-network
+            - backend
         ports:
             - "6379:6379"
         restart: always
 
 networks:
-    application-network:
+    backend:
         external: true
 
 volumes:
