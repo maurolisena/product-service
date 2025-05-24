@@ -1,24 +1,20 @@
 pipeline {
     agent any
 
+    options {
+        failFast true
+    }
+
     stages {
-        stage('Preparar workspace y permisos') {
-            steps {
-                echo "Mostrando ruta y contenido mongo-init"
-                sh '''
-                    chmod -R 755 ./database/mongo-init
-                    ls -la ./database/mongo-init
-                '''
-            }
-        }
 
         stage('Limpiar contenedores y volúmenes') {
             steps {
-                echo "Deteniendo contenedores y eliminando volúmenes y contenedores previos si existen..."
-                sh '''
-                    docker compose down --volumes --remove-orphans || true
-                    docker volume rm mongo_database_data || true
-                '''
+                catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
+                    sh '''
+                        docker compose down --volumes --remove-orphans
+                        docker volume rm mongo_database_data
+                    '''
+                }
             }
         }
 
