@@ -29,7 +29,7 @@ services:
             MONGO_INITDB_ROOT_PASSWORD: A8424628
             MONGO_INITDB_DATABASE: product_db
         volumes:
-            - ./database/mongo-init:/docker-entrypoint-initdb.d:ro
+            - ${PWD}/database/mongo-init:/docker-entrypoint-initdb.d:ro
             - mongo_database_data:/data/db
         healthcheck:
             test: ["CMD", "mongosh", "--eval", "db.runCommand('ping').ok"]

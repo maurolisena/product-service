@@ -1,19 +1,36 @@
 pipeline {
     agent any
 
+    environment {
+        PWD = "${env.WORKSPACE}"
+    }
+
     stages {
-        stage('Preparar') {
+        stage('Debug Path') {
             steps {
-                echo "Limpiando contenedores previos si existen..."
+                echo "Mostrando contenido de mongo-init para verificar..."
+                sh '''
+                    pwd
+                    ls -la $PWD/database/mongo-init
+                '''
+            }
+        }
+
+        stage('Limpiar contenedores y volúmenes') {
+            steps {
+                echo "Deteniendo y eliminando contenedores y volúmenes previos si existen..."
                 sh '''
                     docker compose down --volumes --remove-orphans || true
+
+                    # Forzar eliminación del volumen de datos si existe
+                    docker volume rm $(docker volume ls -qf "name=mongo_database_data") || true
                 '''
             }
         }
 
         stage('Build y Levantar Servicios') {
             steps {
-                echo "Construyendo imágenes y levantando servicios"
+                echo "Construyendo imágenes y levantando servicios..."
                 sh 'docker compose up -d --build'
             }
         }
