@@ -1,43 +1,39 @@
 pipeline {
     agent any
 
-    environment {
-        PWD = "${env.WORKSPACE}"
-    }
-
     stages {
-        stage('Debug Path') {
+        stage('Preparar workspace y permisos') {
             steps {
-                echo "Mostrando contenido de mongo-init para verificar..."
+                echo "Mostrando ruta y contenido mongo-init"
                 sh '''
                     pwd
-                    ls -la $PWD/database/mongo-init
+                    ls -la ./database/mongo-init
+                    chmod -R 755 ./database/mongo-init
+                    ls -la ./database/mongo-init
                 '''
             }
         }
 
         stage('Limpiar contenedores y volúmenes') {
             steps {
-                echo "Deteniendo y eliminando contenedores y volúmenes previos si existen..."
+                echo "Deteniendo contenedores y eliminando volúmenes y contenedores previos si existen..."
                 sh '''
                     docker compose down --volumes --remove-orphans || true
-
-                    # Forzar eliminación del volumen de datos si existe
-                    docker volume rm $(docker volume ls -qf "name=mongo_database_data") || true
+                    docker volume rm product-service_mongo_database_data || true
                 '''
             }
         }
 
-        stage('Build y Levantar Servicios') {
+        stage('Construir y levantar servicios') {
             steps {
-                echo "Construyendo imágenes y levantando servicios..."
+                echo "Construyendo imágenes y levantando servicios en background"
                 sh 'docker compose up -d --build'
             }
         }
 
-        stage('Esperar MongoDB') {
+        stage('Esperar a MongoDB listo') {
             steps {
-                echo "Esperando a que MongoDB esté listo..."
+                echo "Esperando que MongoDB esté saludable..."
                 sh '''
                     until docker exec mongo_database mongosh --eval "db.runCommand('ping').ok" | grep 1; do
                         echo "Esperando MongoDB..."
@@ -47,9 +43,13 @@ pipeline {
             }
         }
 
-        stage('Verificar Contenedores') {
+        stage('Verificar contenedores y logs de mongo') {
             steps {
+                echo "Listando contenedores activos"
                 sh 'docker ps'
+
+                echo "Mostrando últimos logs de mongo_database para verificar scripts init"
+                sh 'docker logs --tail 30 mongo_database'
             }
         }
     }
