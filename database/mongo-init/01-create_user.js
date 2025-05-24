@@ -1,4 +1,4 @@
-db = db.getSiblingDB('product_db');
+db = db.getSiblingDB('admin');
 
 db.createUser({
     user: 'mlisena',
