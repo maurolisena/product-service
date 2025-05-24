@@ -1,5 +1,15 @@
 db = db.getSiblingDB('product_db');
 
+db.createUser({
+    user: 'mlisena',
+    pwd: 'A8424628',
+    roles: [
+        { role: 'readWrite', db: 'product_db' }
+    ]
+});
+
+db.auth('mlisena', 'A8424628');
+
 db.products.insertMany([
     {
         name: "Filtro de aceite",
