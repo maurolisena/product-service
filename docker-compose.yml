@@ -25,8 +25,8 @@ services:
         networks:
             - backend
         environment:
-            MONGO_INITDB_ROOT_USERNAME: admin
-            MONGO_INITDB_ROOT_PASSWORD: adminpass
+            MONGO_INITDB_ROOT_USERNAME: mlisena
+            MONGO_INITDB_ROOT_PASSWORD: A8424628
             MONGO_INITDB_DATABASE: product_db
         volumes:
             - ./database/mongo-init:/docker-entrypoint-initdb.d:ro
