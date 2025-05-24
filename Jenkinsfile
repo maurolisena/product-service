@@ -1,10 +1,6 @@
 pipeline {
     agent any
 
-    options {
-        failFast true
-    }
-
     stages {
 
         stage('Limpiar contenedores y volúmenes') {
