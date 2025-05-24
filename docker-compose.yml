@@ -18,7 +18,7 @@ services:
             - backend
 
     mongo_database:
-        image: mongodb/mongodb-community-server
+        image: mongo:6.0
         container_name: mongo_database
         ports:
             - "27017:27017"
@@ -28,7 +28,7 @@ services:
             MONGO_INITDB_ROOT_USERNAME: mlisena
             MONGO_INITDB_ROOT_PASSWORD: A8424628
         volumes:
-            - ./database/mongo-init:/docker-entrypoint-initdb.d
+            - ./database/mongo-init:/docker-entrypoint-initdb.d:ro
             - mongo_database_data:/data/db
         healthcheck:
             test: ["CMD", "mongosh", "--eval", "db.runCommand('ping').ok"]
