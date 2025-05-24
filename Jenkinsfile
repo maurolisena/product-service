@@ -6,8 +6,6 @@ pipeline {
             steps {
                 echo "Mostrando ruta y contenido mongo-init"
                 sh '''
-                    pwd
-                    ls -la ./database/mongo-init
                     chmod -R 755 ./database/mongo-init
                     ls -la ./database/mongo-init
                 '''
@@ -19,7 +17,7 @@ pipeline {
                 echo "Deteniendo contenedores y eliminando volúmenes y contenedores previos si existen..."
                 sh '''
                     docker compose down --volumes --remove-orphans || true
-                    docker volume rm product-service_mongo_database_data || true
+                    docker volume rm mongo_database_data || true
                 '''
             }
         }
