@@ -1,7 +1,6 @@
 package com.mlisena.product.configuration.mongo.migrations;
 
 import com.mlisena.product.entity.Product;
-import com.mlisena.product.repository.ProductRepository;
 import io.mongock.api.annotations.ChangeUnit;
 import io.mongock.api.annotations.Execution;
 import io.mongock.api.annotations.RollbackExecution;
