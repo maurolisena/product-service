@@ -1,23 +1,25 @@
 package com.mlisena.product.configuration.mongo.migrations;
 
 import com.mlisena.product.entity.Product;
+import com.mlisena.product.repository.ProductRepository;
 import io.mongock.api.annotations.ChangeUnit;
 import io.mongock.api.annotations.Execution;
+import io.mongock.api.annotations.RollbackExecution;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @ChangeUnit(id="create-products-changelog-01", order = "001", author = "mongock")
 @Slf4j
+@RequiredArgsConstructor
 public class CreateProducts {
 
     private final MongoTemplate mongoTemplate;
-
-    public CreateProducts(MongoTemplate mongoTemplate) {
-        this.mongoTemplate = mongoTemplate;
-    }
 
     @Execution
     public void changeSet() {
@@ -51,5 +53,29 @@ public class CreateProducts {
         ));
 
         log.info("✅ Successfully insertion of products.");
+    }
+
+    @RollbackExecution
+    public void rollback() {
+        mongoTemplate.remove(Query.query(Criteria.where("name").is("Filtro de aceite")), Product.class);
+        mongoTemplate.remove(Query.query(Criteria.where("name").is("Pastillas de freno")), Product.class);
+        mongoTemplate.remove(Query.query(Criteria.where("name").is("Amortiguador delantero")), Product.class);
+        mongoTemplate.remove(Query.query(Criteria.where("name").is("Bujías")), Product.class);
+        mongoTemplate.remove(Query.query(Criteria.where("name").is("Filtro de aire")), Product.class);
+        mongoTemplate.remove(Query.query(Criteria.where("name").is("Correa de distribución")), Product.class);
+        mongoTemplate.remove(Query.query(Criteria.where("name").is("Radiador")), Product.class);
+        mongoTemplate.remove(Query.query(Criteria.where("name").is("Batería 12V")), Product.class);
+        mongoTemplate.remove(Query.query(Criteria.where("name").is("Alternador")), Product.class);
+        mongoTemplate.remove(Query.query(Criteria.where("name").is("Sensor de oxígeno")), Product.class);
+        mongoTemplate.remove(Query.query(Criteria.where("name").is("Faro delantero")), Product.class);
+        mongoTemplate.remove(Query.query(Criteria.where("name").is("Espejo retrovisor")), Product.class);
+        mongoTemplate.remove(Query.query(Criteria.where("name").is("Filtro de combustible")), Product.class);
+        mongoTemplate.remove(Query.query(Criteria.where("name").is("Compresor de aire acondicionado")), Product.class);
+        mongoTemplate.remove(Query.query(Criteria.where("name").is("Kit de embrague")), Product.class);
+        mongoTemplate.remove(Query.query(Criteria.where("name").is("Parabrisas")), Product.class);
+        mongoTemplate.remove(Query.query(Criteria.where("name").is("Tubo de escape")), Product.class);
+        mongoTemplate.remove(Query.query(Criteria.where("name").is("Sensor de temperatura")), Product.class);
+        mongoTemplate.remove(Query.query(Criteria.where("name").is("Motor de arranque")), Product.class);
+        mongoTemplate.remove(Query.query(Criteria.where("name").is("Lámparas LED")), Product.class);
     }
 }
