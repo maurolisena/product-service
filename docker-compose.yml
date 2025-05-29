@@ -11,43 +11,9 @@ services:
         environment:
             - SPRING_PROFILES_ACTIVE=dev
             - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka-server:29092
-        depends_on:
-            mongo_database:
-                condition: service_healthy
         networks:
             - backend
-
-    mongo_database:
-        image: mongo:6.0
-        container_name: mongo_database
-        ports:
-            - "27017:27017"
-        networks:
-            - backend
-        environment:
-            MONGO_INITDB_ROOT_USERNAME: mlisena
-            MONGO_INITDB_ROOT_PASSWORD: A8424628
-            MONGO_INITDB_DATABASE: product_db
-        volumes:
-            - mongo_database_data:/data/db
-        healthcheck:
-            test: ["CMD", "mongosh", "--eval", "db.runCommand('ping').ok"]
-            interval: 10s
-            retries: 5
-            start_period: 30s
-
-    redis-database:
-        image: redis:7.2-alpine
-        container_name: redis-database
-        networks:
-            - backend
-        ports:
-            - "6379:6379"
-        restart: always
 
 networks:
     backend:
         external: true
-
-volumes:
-    mongo_database_data:
