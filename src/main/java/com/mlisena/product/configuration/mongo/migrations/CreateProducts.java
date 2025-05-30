@@ -13,7 +13,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@ChangeUnit(id="create-products-changelog-01", order = "001", author = "mongock")
+@ChangeUnit(id="create-products-changelog-01", order = "003", author = "mongock")
 @Slf4j
 @RequiredArgsConstructor
 public class CreateProducts {

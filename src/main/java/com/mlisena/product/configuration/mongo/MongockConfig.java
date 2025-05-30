@@ -1,28 +1,22 @@
 package com.mlisena.product.configuration.mongo;
 
-import io.mongock.driver.mongodb.springdata.v4.SpringDataMongoV4Driver;
+import com.mongodb.client.MongoClient;
+import io.mongock.driver.mongodb.sync.v4.driver.MongoSync4Driver;
+import io.mongock.runner.springboot.EnableMongock;
 import io.mongock.runner.springboot.MongockSpringboot;
 import io.mongock.runner.springboot.base.MongockInitializingBeanRunner;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.mongodb.core.MongoTemplate;
 
 @Configuration
+@EnableMongock
 public class MongockConfig {
 
     @Bean
-    public MongockInitializingBeanRunner mongockInitializingBeanRunner(
-        ApplicationContext springContext,
-        MongoTemplate mongoTemplate
-    ) {
-
-        SpringDataMongoV4Driver driver = SpringDataMongoV4Driver.withDefaultLock(mongoTemplate);
-
+    public MongockInitializingBeanRunner mongockInitializingBeanRunner(MongoClient mongoClient) {
         return MongockSpringboot.builder()
-                .setDriver(driver)
-                .setSpringContext(springContext)
-                .addChangeLogsScanPackage("com.mlisena.product.configuration.mongo.migrations")
+                .setDriver(MongoSync4Driver.withDefaultLock(mongoClient, "product_db"))
+                .addChangeLogsScanPackage("com.mlisena.product.migration")
                 .buildInitializingBeanRunner();
     }
 }
