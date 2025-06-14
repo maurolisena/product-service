@@ -1,7 +1,7 @@
 package com.mlisena.product.service;
 
 import com.mlisena.product.dto.mapper.ProductMapper;
-import com.mlisena.product.dto.payload.CreateInventoryEvent;
+import com.mlisena.product.dto.payload.InventoryCreateRequest;
 import com.mlisena.product.dto.request.product.CreateProductRequest;
 import com.mlisena.product.dto.request.product.ProductFilterRequest;
 import com.mlisena.product.dto.request.product.UpdateProductRequest;
@@ -9,7 +9,7 @@ import com.mlisena.product.dto.response.product.ProductResponse;
 import com.mlisena.product.entity.Product;
 import com.mlisena.product.repository.ProductRepository;
 import com.mlisena.product.service.external.InventoryService;
-import com.mlisena.product.service.kafka.KafkaProducerService;
+import com.mlisena.product.service.kafka.ProductKafkaProducer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -24,7 +24,7 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final InventoryService inventoryService;
-    private final KafkaProducerService kafkaProducerService;
+    private final ProductKafkaProducer productKafkaProducer;
 
     public ProductResponse createProduct(CreateProductRequest request) {
         log.info("Creating Product with request: {}", request);
@@ -32,13 +32,13 @@ public class ProductService {
         productRepository.save(product);
         log.info("Product saved with id: {}", product.getId());
 
-        CreateInventoryEvent event = CreateInventoryEvent.builder()
+        InventoryCreateRequest event = InventoryCreateRequest.builder()
             .skuCode(product.getCode())
             .quantity(request.quantity())
             .build();
-        kafkaProducerService.sendCreateInventoryEvent(event);
+        productKafkaProducer.sendCreateInventoryEvent(event);
 
-        return ProductMapper.toResponse(product, 1);
+        return ProductMapper.toResponse(product, 0);
     }
 
     public ProductResponse getProductById(String id) {

@@ -10,14 +10,23 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class KafkaUtils {
 
-    private final ObjectMapper objectMapper;
+    private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    public String objectToJson(Object object) {
+    public static String serialize(Object object) {
         try {
             return objectMapper.writeValueAsString(object);
         } catch (Exception e) {
             log.error("Error serializing object to JSON: {}", e.getMessage());
             throw new RuntimeException("Error serializing object to JSON", e);
+        }
+    }
+
+    public static <T> T deserialize(String event, Class<T> targetClass) {
+        try {
+            return objectMapper.readValue(event, targetClass);
+        } catch (Exception e) {
+            log.error("Error deserializing JSON to object: {}", e.getMessage());
+            throw new RuntimeException("Error deserializing JSON to object", e);
         }
     }
 }

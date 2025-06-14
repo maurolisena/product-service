@@ -29,26 +29,26 @@ public class CreateProducts {
             mongoTemplate.createCollection("products");
         }
         mongoTemplate.insertAll(List.of(
-                new Product(null, "Filtro de aceite", "Filtro para sistema de lubricación de motor.", "FO-001", 10.99, true, LocalDateTime.of(2024, 6, 10, 0, 0), LocalDateTime.of(2024, 9, 1, 0, 0)),
-                new Product(null, "Pastillas de freno", "Pastillas para frenos delanteros.", "PF-002", 25.50, true, LocalDateTime.of(2024, 7, 5, 0, 0), LocalDateTime.of(2024, 9, 3, 0, 0)),
-                new Product(null, "Amortiguador delantero", "Amortiguador para suspensión delantera.", "AD-003", 75.00, true, LocalDateTime.of(2024, 8, 18, 0, 0), LocalDateTime.of(2024, 9, 2, 0, 0)),
-                new Product(null, "Bujías", "Juego de bujías para encendido.", "BJ-004", 15.20, true, LocalDateTime.of(2024, 6, 25, 0, 0), LocalDateTime.of(2024, 7, 15, 0, 0)),
-                new Product(null, "Filtro de aire", "Filtro para entrada de aire del motor.", "FA-005", 12.30, true, LocalDateTime.of(2024, 9, 4, 0, 0), LocalDateTime.of(2024, 9, 18, 0, 0)),
-                new Product(null, "Correa de distribución", "Correa sincronizadora del motor.", "CD-006", 45.99, true, LocalDateTime.of(2024, 10, 1, 0, 0), LocalDateTime.of(2024, 11, 10, 0, 0)),
-                new Product(null, "Radiador", "Radiador para sistema de refrigeración.", "RD-007", 110.00, true, LocalDateTime.of(2024, 11, 11, 0, 0), LocalDateTime.of(2024, 12, 2, 0, 0)),
-                new Product(null, "Batería 12V", "Batería estándar de 12 voltios.", "BT-008", 89.95, true, LocalDateTime.of(2024, 12, 21, 0, 0), LocalDateTime.of(2025, 1, 5, 0, 0)),
-                new Product(null, "Alternador", "Alternador para sistema eléctrico.", "AL-009", 130.00, true, LocalDateTime.of(2025, 1, 14, 0, 0), LocalDateTime.of(2025, 1, 30, 0, 0)),
-                new Product(null, "Sensor de oxígeno", "Sensor para mezcla aire-combustible.", "SO-010", 40.00, true, LocalDateTime.of(2024, 7, 12, 0, 0), LocalDateTime.of(2024, 7, 24, 0, 0)),
-                new Product(null, "Faro delantero", "Faro halógeno delantero derecho.", "FD-011", 60.00, true, LocalDateTime.of(2024, 9, 21, 0, 0), LocalDateTime.of(2024, 10, 1, 0, 0)),
-                new Product(null, "Espejo retrovisor", "Espejo lateral izquierdo manual.", "ER-012", 35.00, true, LocalDateTime.of(2024, 11, 1, 0, 0), LocalDateTime.of(2024, 11, 11, 0, 0)),
-                new Product(null, "Filtro de combustible", "Filtro para línea de combustible.", "FC-013", 18.00, true, LocalDateTime.of(2024, 8, 7, 0, 0), LocalDateTime.of(2024, 8, 20, 0, 0)),
-                new Product(null, "Compresor de aire acondicionado", "Compresor para sistema de A/C.", "CA-014", 210.00, true, LocalDateTime.of(2025, 1, 31, 0, 0), LocalDateTime.of(2025, 2, 15, 0, 0)),
-                new Product(null, "Kit de embrague", "Kit completo para embrague manual.", "KE-015", 150.00, true, LocalDateTime.of(2024, 10, 18, 0, 0), LocalDateTime.of(2024, 11, 2, 0, 0)),
-                new Product(null, "Parabrisas", "Cristal delantero laminado.", "PB-016", 95.00, true, LocalDateTime.of(2025, 3, 6, 0, 0), LocalDateTime.of(2025, 3, 12, 0, 0)),
-                new Product(null, "Tubo de escape", "Tubo final del sistema de escape.", "TE-017", 80.00, true, LocalDateTime.of(2024, 6, 15, 0, 0), LocalDateTime.of(2024, 6, 25, 0, 0)),
-                new Product(null, "Sensor de temperatura", "Sensor para temperatura del refrigerante.", "ST-018", 22.00, true, LocalDateTime.of(2025, 3, 28, 0, 0), LocalDateTime.of(2025, 4, 15, 0, 0)),
-                new Product(null, "Motor de arranque", "Motor eléctrico para arranque del vehículo.", "MA-019", 140.00, true, LocalDateTime.of(2024, 12, 6, 0, 0), LocalDateTime.of(2024, 12, 15, 0, 0)),
-                new Product(null, "Lámparas LED", "Juego de lámparas LED para faros.", "LL-020", 35.99, true, LocalDateTime.of(2025, 4, 18, 0, 0), LocalDateTime.of(2025, 4, 23, 0, 0))
+                new Product(null, "Filtro de aceite", "FO-001", "Filtro para sistema de lubricación de motor.", 10.99, true, LocalDateTime.of(2024, 6, 10, 0, 0), LocalDateTime.of(2024, 9, 1, 0, 0)),
+                new Product(null, "Pastillas de freno", "PF-002", "Pastillas para frenos delanteros.", 25.50, true, LocalDateTime.of(2024, 7, 5, 0, 0), LocalDateTime.of(2024, 9, 3, 0, 0)),
+                new Product(null, "Amortiguador delantero", "AD-003", "Amortiguador para suspensión delantera.", 75.00, true, LocalDateTime.of(2024, 8, 18, 0, 0), LocalDateTime.of(2024, 9, 2, 0, 0)),
+                new Product(null, "Bujías", "BJ-004", "Juego de bujías para encendido.", 15.20, true, LocalDateTime.of(2024, 6, 25, 0, 0), LocalDateTime.of(2024, 7, 15, 0, 0)),
+                new Product(null, "Filtro de aire", "FA-005", "Filtro para entrada de aire del motor.", 12.30, true, LocalDateTime.of(2024, 9, 4, 0, 0), LocalDateTime.of(2024, 9, 18, 0, 0)),
+                new Product(null, "Correa de distribución", "CD-006", "Correa sincronizadora del motor.", 45.99, true, LocalDateTime.of(2024, 10, 1, 0, 0), LocalDateTime.of(2024, 11, 10, 0, 0)),
+                new Product(null, "Radiador", "RD-007", "Radiador para sistema de refrigeración.", 110.00, true, LocalDateTime.of(2024, 11, 11, 0, 0), LocalDateTime.of(2024, 12, 2, 0, 0)),
+                new Product(null, "Batería 12V", "BT-008", "Batería estándar de 12 voltios.", 89.95, true, LocalDateTime.of(2024, 12, 21, 0, 0), LocalDateTime.of(2025, 1, 5, 0, 0)),
+                new Product(null, "Alternador", "AL-009", "Alternador para sistema eléctrico.", 130.00, true, LocalDateTime.of(2025, 1, 14, 0, 0), LocalDateTime.of(2025, 1, 30, 0, 0)),
+                new Product(null, "Sensor de oxígeno", "SO-010", "Sensor para mezcla aire-combustible.", 40.00, true, LocalDateTime.of(2024, 7, 12, 0, 0), LocalDateTime.of(2024, 7, 24, 0, 0)),
+                new Product(null, "Faro delantero", "FD-011", "Faro halógeno delantero derecho.", 60.00, true, LocalDateTime.of(2024, 9, 21, 0, 0), LocalDateTime.of(2024, 10, 1, 0, 0)),
+                new Product(null, "Espejo retrovisor", "ER-012", "Espejo lateral izquierdo manual.", 35.00, true, LocalDateTime.of(2024, 11, 1, 0, 0), LocalDateTime.of(2024, 11, 11, 0, 0)),
+                new Product(null, "Filtro de combustible", "FC-013", "Filtro para línea de combustible.", 18.00, true, LocalDateTime.of(2024, 8, 7, 0, 0), LocalDateTime.of(2024, 8, 20, 0, 0)),
+                new Product(null, "Compresor de aire acondicionado", "CA-014", "Compresor para sistema de A/C.", 210.00, true, LocalDateTime.of(2025, 1, 31, 0, 0), LocalDateTime.of(2025, 2, 15, 0, 0)),
+                new Product(null, "Kit de embrague", "KE-015", "Kit completo para embrague manual.", 150.00, true, LocalDateTime.of(2024, 10, 18, 0, 0), LocalDateTime.of(2024, 11, 2, 0, 0)),
+                new Product(null, "Parabrisas", "PB-016", "Cristal delantero laminado.", 95.00, true, LocalDateTime.of(2025, 3, 6, 0, 0), LocalDateTime.of(2025, 3, 12, 0, 0)),
+                new Product(null, "Tubo de escape", "TE-017", "Tubo final del sistema de escape.", 80.00, true, LocalDateTime.of(2024, 6, 15, 0, 0), LocalDateTime.of(2024, 6, 25, 0, 0)),
+                new Product(null, "Sensor de temperatura", "ST-018", "Sensor para temperatura del refrigerante.", 22.00, true, LocalDateTime.of(2025, 3, 28, 0, 0), LocalDateTime.of(2025, 4, 15, 0, 0)),
+                new Product(null, "Motor de arranque", "MA-019", "Motor eléctrico para arranque del vehículo.", 140.00, true, LocalDateTime.of(2024, 12, 6, 0, 0), LocalDateTime.of(2024, 12, 15, 0, 0)),
+                new Product(null, "Lámparas LED", "LL-020", "Juego de lámparas LED para faros.", 35.99, true, LocalDateTime.of(2025, 4, 18, 0, 0), LocalDateTime.of(2025, 4, 23, 0, 0))
         ));
 
         log.info("✅ Successfully insertion of products.");
