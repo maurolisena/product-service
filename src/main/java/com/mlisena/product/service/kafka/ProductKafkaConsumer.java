@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 public class ProductKafkaConsumer {
 
     @KafkaListener(
-        topics = "#{__listener.kafkaProperties.topics.inventoryCreatedConfirmation}",
+        topics = "${kafka.topics.inventory-created-confirmation}",
         groupId = "${kafka.consumer.group-id}"
     )
     public void confirmInventoryCreatedEvent(String payload) {
