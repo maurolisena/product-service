@@ -14,5 +14,5 @@ COPY wait-for-services.sh /wait-for-services.sh
 RUN chmod +x /wait-for-services.sh
 
 # Exponer puerto y ejecutar la aplicación
-EXPOSE 9001
+EXPOSE 9002
 ENTRYPOINT ["java", "-jar", "app.jar"]
