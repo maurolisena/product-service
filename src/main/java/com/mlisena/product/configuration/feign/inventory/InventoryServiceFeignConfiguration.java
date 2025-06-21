@@ -4,18 +4,9 @@ import feign.codec.ErrorDecoder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+@Configuration
 public class InventoryServiceFeignConfiguration {
 
-    private InventoryServiceFeignConfiguration() {
-        // Private constructor to prevent instantiation
-    }
-
-    @Configuration
-    public static class InventoryServiceFeignConfig {
-
-        @Bean
-        public ErrorDecoder inventoryServiceErrorDecoder() {
-            return new InventoryServiceErrorDecoder();
-        }
-    }
+    @Bean
+    public ErrorDecoder inventoryServiceErrorDecoder() { return new InventoryServiceErrorDecoder(); }
 }
