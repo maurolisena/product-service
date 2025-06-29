@@ -24,18 +24,6 @@ public class InventoryRedisHelper {
         redisTemplate.opsForValue().set(INVENTORY_KEY_PREFIX + skuCode, quantity.toString(), Duration.ofMinutes(10));
     }
 
-    public Integer getCachedInventoryStock(String skuCode) {
-        String quantity = redisTemplate.opsForValue().get(INVENTORY_KEY_PREFIX + skuCode);
-
-        if (quantity == null) {
-            log.info("Stock for SKU code {} not found in cache", skuCode);
-            return null;
-        }
-
-        log.info("Stock for SKU code {} found in cache: {}", skuCode, quantity);
-        return Integer.parseInt(quantity);
-    }
-
     public Map<String, Integer> getCachedInventoryStockList(List<String> skuCodes) {
         List<String> keys = skuCodes.stream()
                 .map(skuCode -> INVENTORY_KEY_PREFIX + skuCode)

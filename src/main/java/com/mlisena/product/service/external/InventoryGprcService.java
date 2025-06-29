@@ -1,8 +1,8 @@
 package com.mlisena.product.service.external;
 
-import com.mlisena.product.client.InventoryClient;
-import com.mlisena.product.dto.response.inventory.Inventory;
 import com.mlisena.product.service.redis.InventoryRedisHelper;
+import inventory.Inventory.*;
+import inventory.InventoryClientGRPCGrpc;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -13,24 +13,20 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class InventoryService {
+public class InventoryGprcService {
 
-    private final InventoryClient inventoryClient;
+    private final InventoryClientGRPCGrpc.InventoryClientGRPCBlockingStub inventoryStub;
     private final InventoryRedisHelper inventoryRedisHelper;
 
     public int getProductStock(String skuCode) {
         log.info("Getting stock for SKU code: {}", skuCode);
-        Integer cachedStock = inventoryRedisHelper.getCachedInventoryStock(skuCode);
+        GetInventoryRequest request = GetInventoryRequest.newBuilder()
+                .setSkuCode(skuCode)
+                .build();
 
-        if (cachedStock != null) {
-            return cachedStock;
-        }
-
-        Inventory inventory = inventoryClient.getInventory(skuCode);
-        log.info("Stock for Product with SKU code {}: {}", skuCode, inventory);
-
-        inventoryRedisHelper.cacheProductStock(skuCode, inventory.quantity());
-        return inventory.quantity();
+        InventoryResponse response = inventoryStub.getInventory(request);
+        log.info("Stock for Product with SKU code {}: {}", skuCode, response.getQuantity());
+        return response.getQuantity();
     }
 
     public Map<String, Integer> getProductStockMap(List<String> skuCodes) {
@@ -45,12 +41,16 @@ public class InventoryService {
             return cachedStock;
         }
 
-        log.info("Getting missing SKU codes in cache");
-        List<Inventory> inventories = inventoryClient.getInventories(missingSkuCodes);
+        GetInventoriesRequest request = GetInventoriesRequest.newBuilder()
+                .addAllSkuCodes(missingSkuCodes)
+                .build();
 
-        inventories.forEach(inventory -> {
-            inventoryRedisHelper.cacheProductStock(inventory.skuCode(), inventory.quantity());
-            cachedStock.put(inventory.skuCode(), inventory.quantity());
+        log.info("Getting missing SKU codes in cache");
+        InventoriesResponse inventories = inventoryStub.getInventories(request);
+
+        inventories.getInventoriesList().forEach(inventory -> {
+            inventoryRedisHelper.cacheProductStock(inventory.getSkuCode(), inventory.getQuantity());
+            cachedStock.put(inventory.getSkuCode(), inventory.getQuantity());
         });
 
         return cachedStock;

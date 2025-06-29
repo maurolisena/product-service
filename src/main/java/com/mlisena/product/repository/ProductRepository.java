@@ -1,7 +1,7 @@
 package com.mlisena.product.repository;
 
-import com.mlisena.product.dto.request.product.ProductFilterRequest;
-import com.mlisena.product.dto.request.product.UpdateProductRequest;
+import com.mlisena.product.dto.request.ProductFilterRequest;
+import com.mlisena.product.dto.request.UpdateProductRequest;
 import com.mlisena.product.entity.Product;
 import com.mlisena.product.exception.product.ProductAlreadyExistsException;
 import com.mlisena.product.exception.product.ProductNotFoundException;

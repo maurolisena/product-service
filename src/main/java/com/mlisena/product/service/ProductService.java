@@ -1,14 +1,14 @@
 package com.mlisena.product.service;
 
-import com.mlisena.product.dto.mapper.ProductMapper;
+import com.mlisena.product.mapper.ProductMapper;
 import com.mlisena.product.dto.payload.InventoryCreateRequest;
-import com.mlisena.product.dto.request.product.CreateProductRequest;
-import com.mlisena.product.dto.request.product.ProductFilterRequest;
-import com.mlisena.product.dto.request.product.UpdateProductRequest;
-import com.mlisena.product.dto.response.product.ProductResponse;
+import com.mlisena.product.dto.request.CreateProductRequest;
+import com.mlisena.product.dto.request.ProductFilterRequest;
+import com.mlisena.product.dto.request.UpdateProductRequest;
+import com.mlisena.product.dto.response.ProductResponse;
 import com.mlisena.product.entity.Product;
 import com.mlisena.product.repository.ProductRepository;
-import com.mlisena.product.service.external.InventoryService;
+import com.mlisena.product.service.external.InventoryGprcService;
 import com.mlisena.product.service.kafka.ProductKafkaProducer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +23,7 @@ import java.util.Map;
 public class ProductService {
 
     private final ProductRepository productRepository;
-    private final InventoryService inventoryService;
+    private final InventoryGprcService inventoryGprcService;
     private final ProductKafkaProducer productKafkaProducer;
 
     public ProductResponse createProduct(CreateProductRequest request) {
@@ -45,7 +45,7 @@ public class ProductService {
         log.info("Getting Product with id: {}", id);
         Product product = productRepository.findById(id);
         log.info("Product found with id: {}", id);
-        int stock = inventoryService.getProductStock(product.getCode());
+        int stock = inventoryGprcService.getProductStock(product.getCode());
         return ProductMapper.toResponse(product, stock);
     }
 
@@ -55,7 +55,7 @@ public class ProductService {
         log.info("Products found: {}", productPage.getTotalElements());
 
         log.info("Getting stock for Products");
-        Map<String, Integer> stockMap = inventoryService.getProductStockMap(
+        Map<String, Integer> stockMap = inventoryGprcService.getProductStockMap(
             productPage.getContent().stream()
                 .map(Product::getCode)
                 .toList());
@@ -69,7 +69,7 @@ public class ProductService {
     public ProductResponse updateProduct(String id, UpdateProductRequest request) {
         log.info("Updating Product with id: {}", id);
         Product product = productRepository.updateById(id, request);
-        int stock = inventoryService.getProductStock(product.getCode());
+        int stock = inventoryGprcService.getProductStock(product.getCode());
         return ProductMapper.toResponse(product, stock);
     }
 

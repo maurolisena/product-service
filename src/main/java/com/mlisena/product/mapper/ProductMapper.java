@@ -1,8 +1,7 @@
-package com.mlisena.product.dto.mapper;
+package com.mlisena.product.mapper;
 
-import com.mlisena.product.dto.request.product.CreateProductRequest;
-import com.mlisena.product.dto.response.product.ProductListResponse;
-import com.mlisena.product.dto.response.product.ProductResponse;
+import com.mlisena.product.dto.request.CreateProductRequest;
+import com.mlisena.product.dto.response.ProductResponse;
 import com.mlisena.product.entity.Product;
 
 public class ProductMapper {

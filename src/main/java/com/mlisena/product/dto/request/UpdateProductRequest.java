@@ -1,4 +1,4 @@
-package com.mlisena.product.dto.request.product;
+package com.mlisena.product.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
